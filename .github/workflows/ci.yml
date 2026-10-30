@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Lint and test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install GTK 4 and PyGObject
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            python3-gi gir1.2-gtk-4.0 python3-pytest xvfb xauth dbus dbus-bin
+
+      - name: Lint
+        run: pipx run ruff check .
+
+      - name: Test
+        # Xvfb gives GTK a display; a private session bus lets GApplication register.
+        run: xvfb-run -a dbus-run-session -- python3 -m pytest -v
+
+  flatpak:
+    name: Build Flatpak
+    runs-on: ubuntu-24.04
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-50
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: twentytwentytoo.flatpak
+          manifest-path: io.github.twentytwentytoo.TwentyTwentyToo.yml
+          cache-key: flatpak-builder-${{ github.sha }}

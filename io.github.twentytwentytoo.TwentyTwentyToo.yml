@@ -1,0 +1,29 @@
+id: io.github.twentytwentytoo.TwentyTwentyToo
+runtime: org.gnome.Platform
+runtime-version: '50'
+sdk: org.gnome.Sdk
+command: twentytwentytoo
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+  # Chimes at the start and end of each break
+  - --socket=pulseaudio
+  # Don't count time spent with the screen locked (KDE / GNOME)
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --talk-name=org.gnome.ScreenSaver
+modules:
+  - name: twentytwentytoo
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 twentytwentytoo.py /app/bin/twentytwentytoo
+      - install -Dm644 io.github.twentytwentytoo.TwentyTwentyToo.desktop /app/share/applications/io.github.twentytwentytoo.TwentyTwentyToo.desktop
+      - install -Dm644 io.github.twentytwentytoo.TwentyTwentyToo.svg /app/share/icons/hicolor/scalable/apps/io.github.twentytwentytoo.TwentyTwentyToo.svg
+    sources:
+      - type: file
+        path: twentytwentytoo.py
+      - type: file
+        path: data/io.github.twentytwentytoo.TwentyTwentyToo.desktop
+      - type: file
+        path: data/io.github.twentytwentytoo.TwentyTwentyToo.svg

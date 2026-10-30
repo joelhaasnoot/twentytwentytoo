@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=TwentyTwentyToo
+GenericName=Eye Break Reminder
+Comment=Every 20 minutes, look at something 20 feet away for 20 seconds
+Exec=twentytwentytoo
+Icon=io.github.twentytwentytoo.TwentyTwentyToo
+Terminal=false
+Categories=Utility;Accessibility;
+Keywords=eye;break;20-20-20;rest;timer;
+StartupNotify=true
+SingleMainWindow=true
